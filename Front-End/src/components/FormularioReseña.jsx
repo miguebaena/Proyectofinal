@@ -4,7 +4,7 @@ const FormularioReseña = () => {
   return (
     <form className="review-form">
       <input placeholder="Autor (opcional)" />
-      <textarea placeholder="Escribe tu reseña..." />
+      <input placeholder="Escribe tu reseña..." />
       <label>Puntaje: </label>
       <select>
         {[5, 4, 3, 2, 1, 0].map((n) => (
