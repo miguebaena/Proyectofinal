@@ -1,7 +1,5 @@
 import React from "react";
-import TarjetaJuego from "./TarjetaJuego.jsx";
 import FormularioJuego from "./FormularioJuego.jsx";
-import EstadisticasPersonales from "./EstadisticasPersonales.jsx";
 
 const BibliotecaJuegos = () => {
   return (
@@ -16,14 +14,7 @@ const BibliotecaJuegos = () => {
         </div>
       </div>
 
-      <EstadisticasPersonales />
-
       <h2>Biblioteca</h2>
-      <div className="grid">
-        <TarjetaJuego />
-        <TarjetaJuego />
-        <TarjetaJuego />
-      </div>
     </section>
   );
 };
