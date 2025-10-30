@@ -18,8 +18,6 @@ const BibliotecaJuegos = () => {
       <h2>Biblioteca</h2>
       <div className="grid">
         <TarjetaJuego />
-        <TarjetaJuego />
-        <TarjetaJuego />
       </div>
     </section>
   );

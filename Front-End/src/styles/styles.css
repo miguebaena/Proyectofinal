@@ -29,7 +29,7 @@ header {
   padding: 8px;
 }
 button {
-  background: #007bff;
+  background: rgba(0, 119, 255, 0.789);
   color: white;
   border: none;
   padding: 6px 10px;
@@ -41,7 +41,7 @@ button:hover {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 16px;
 }
 .card {
@@ -53,10 +53,10 @@ button:hover {
   gap: 12px;
 }
 .cover {
-  width: 100px;
+  width: 200px;
   height: 140px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 10px;
 }
 .card-body {
   flex: 1;

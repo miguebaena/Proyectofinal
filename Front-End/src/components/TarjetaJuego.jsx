@@ -8,7 +8,7 @@ const TarjetaJuego = () => {
   return (
     <article className="card">
       <img
-        src="https://via.placeholder.com/150x200?text=Portada"
+        src="https://assets.nintendo.com/image/upload/q_auto/f_auto/store/software/switch/70010000003208/4643fb058642335c523910f3a7910575f56372f612f7c0c9a497aaae978d3e51"
         alt="Portada del juego"
         className="cover"
       />
