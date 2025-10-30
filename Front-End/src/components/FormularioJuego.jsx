@@ -1,10 +1,12 @@
-function FormularioJuego(){
+import React from "react";
+
+const FormularioJuego = () => {
   return (
     <form className="game-form">
-      <input placeholder="Título" />
+      <inpu placeholder="Título" />
       <input placeholder="Plataforma" />
       <input placeholder="URL de portada (opcional)" />
-      <textarea placeholder="Descripción (opcional)" />
+      <input placeholder="Descripción (opcional)" />
       <button type="button">Agregar</button>
     </form>
   );

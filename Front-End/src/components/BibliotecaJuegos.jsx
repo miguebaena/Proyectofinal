@@ -2,9 +2,8 @@ import React from "react";
 import TarjetaJuego from "./TarjetaJuego.jsx";
 import FormularioJuego from "./FormularioJuego.jsx";
 import EstadisticasPersonales from "./EstadisticasPersonales.jsx";
-//import "C:/Users/migue/Documents/Proyecto final/Front-End/src/styles"
 
-function BibliotecaJuegos() {
+const BibliotecaJuegos = () => {
   return (
     <section>
       <div className="top-row">
