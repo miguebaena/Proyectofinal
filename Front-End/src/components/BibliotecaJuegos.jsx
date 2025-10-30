@@ -1,4 +1,5 @@
 import React from "react";
+import TarjetaJuego from "./TarjetaJuego.jsx";
 import FormularioJuego from "./FormularioJuego.jsx";
 
 const BibliotecaJuegos = () => {
@@ -15,6 +16,11 @@ const BibliotecaJuegos = () => {
       </div>
 
       <h2>Biblioteca</h2>
+      <div className="grid">
+        <TarjetaJuego />
+        <TarjetaJuego />
+        <TarjetaJuego />
+      </div>
     </section>
   );
 };
