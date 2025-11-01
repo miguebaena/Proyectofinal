@@ -21,7 +21,6 @@ header {
 }
 .game-form input,
 .game-form textarea,
-.review-form input,
 .review-form textarea {
   display: block;
   width: 100%;
@@ -76,4 +75,30 @@ button:hover {
   padding: 8px;
   border-radius: 6px;
   margin-bottom: 8px;
+}
+
+.game-form select{
+  width: 150px;
+  height: 40px;
+  margin-right: 8px;
+}
+
+select {
+  width: 50px;
+  height: 25px;
+  margin-right: 8px;
+  margin-top: 10px;
+}
+.buscarjuegos input {
+  height: 25px;
+  width: 200px;
+}
+
+.review-form input{
+  width: 270px;
+  height: 25px;
+  
+  display: block;
+  margin: 6px;
+  padding: 8px;
 }

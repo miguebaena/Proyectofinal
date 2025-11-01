@@ -6,7 +6,7 @@ const BibliotecaJuegos = () => {
   return (
     <section>
       <div className="top-row">
-        <div>
+        <div className="buscarjuegos">
           <input placeholder="Buscar juegos..." />
         </div>
         <div>
