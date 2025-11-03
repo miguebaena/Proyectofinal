@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import BibliotecaJuegos from "./components/BibliotecaJuegos.jsx";
 
-function App(){
+const App = () => {
+  const [games, setGames] = useState([]);
+
   return (
     <div className="container">
-      <title>GameTracker Miguel Baena</title>
       <header>
-        <h1>GameTracker Miguel Baena</h1>
+        <h1>GameTracker</h1>
       </header>
-      <main>
-        <BibliotecaJuegos />
-      </main>
+      <BibliotecaJuegos games={games} setGames={setGames} />
     </div>
   );
 };
