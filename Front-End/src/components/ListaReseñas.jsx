@@ -1,24 +1,26 @@
 import React from "react";
 
-const ListaReseñas = () => {
+const ListaReseñas = ({ reseñas, onEdit, onDelete }) => {
   return (
-    <div>
-      <h4>Reseñas</h4>
-      <div className="review">
-        <div className="review-header">
-          <strong>Jugador1</strong> — 5★
-          <button>Eliminar</button>
-        </div>
-        <p>Excelente juego, con una historia impresionante.</p>
-      </div>
-
-      <div className="review">
-        <div className="review-header">
-          <strong>GamerPro</strong> — 4★
-          <button>Eliminar</button>
-        </div>
-        <p>Muy divertido, pero un poco repetitivo.</p>
-      </div>
+    <div className="reviews-list">
+      {reseñas.length === 0 ? (
+        <p>No hay reseñas aún.</p>
+      ) : (
+        reseñas.map((r) => (
+          <div key={r.id} className="review">
+            <div className="review-header">
+              <strong>{r.autor || "Anónimo"}</strong> — {r.puntaje}★
+              <button onClick={() => onDelete(r.id)}>Eliminar</button>
+            </div>
+            <textarea
+              value={r.texto}
+              onChange={(e) =>
+                onEdit(r.id, { ...r, texto: e.target.value })
+              }
+            />
+          </div>
+        ))
+      )}
     </div>
   );
 };

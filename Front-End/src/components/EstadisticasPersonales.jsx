@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useMemo } from "react";
 
-const EstadisticasPersonales = () => {
+const EstadisticasPersonales = ({ games }) => {
+  const stats = useMemo(() => {
+    const total = games.length;
+    const totalReseñas = games.reduce(
+      (s, g) => s + (g.reseñas ? g.reseñas.length : 0),
+      0
+    );
+    return { total, totalReseñas };
+  }, [games]);
+
   return (
     <div className="stats">
-      <div>🎮 Total juegos: 10</div>
-      <div>⏱️ Horas jugadas: 123</div>
-      <div>⭐ Promedio: 4.3</div>
-      <div>✅ Completados: 6</div>
+      <div>🎮 Juegos: {stats.total}</div>
+      <div>📝 Total de reseñas: {stats.totalReseñas}</div>
     </div>
   );
 };
