@@ -3,19 +3,19 @@ import { API_URL } from "../config.js";
 import FormularioJuego from "./FormularioJuego.jsx";
 import TarjetaJuego from "./TarjetaJuego.jsx";
 import EstadisticasPersonales from "./EstadisticasPersonales.jsx";
+import "../App.css";
 
 const BibliotecaJuegos = () => {
   const [games, setGames] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
-  // Cargar juegos desde el backend
   useEffect(() => {
-    fetch(`${API_URL}`)
+    fetch(`${API_URL}/juegos`)
       .then((res) => res.json())
       .then((data) => setGames(data))
       .catch((err) => console.error("Error al cargar juegos:", err));
   }, []);
 
-  // Agregar juego al backend
   const agregarJuego = async (juego) => {
     try {
       const res = await fetch(`${API_URL}/juegos`, {
@@ -25,18 +25,19 @@ const BibliotecaJuegos = () => {
       });
       const nuevo = await res.json();
       setGames([...games, nuevo]);
+      setMostrarModal(false);
     } catch (err) {
       console.error("Error al agregar juego:", err);
     }
   };
 
-  // Eliminar juego del backend
   const eliminarJuego = async (id) => {
+    const confirmar = window.confirm("¿Seguro que deseas eliminar este juego?");
+    if (!confirmar) return;
     await fetch(`${API_URL}/juegos/${id}`, { method: "DELETE" });
     setGames(games.filter((j) => j._id !== id));
   };
 
-  // 🔹 Editar juego
   const editarJuego = async (id, actualizado) => {
     const res = await fetch(`${API_URL}/juegos/${id}`, {
       method: "PUT",
@@ -50,8 +51,22 @@ const BibliotecaJuegos = () => {
   return (
     <section>
       <h2>Biblioteca de Juegos</h2>
-      <FormularioJuego onAdd={agregarJuego} />
+
+      <button onClick={() => setMostrarModal(true)}> + Agregar Juego</button>
+
       <EstadisticasPersonales games={games} />
+
+      {mostrarModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Agregar Nuevo Juego</h3>
+            <FormularioJuego onAdd={agregarJuego} />
+            <div className="modal-buttons">
+              <button onClick={() => setMostrarModal(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid">
         {games.length === 0 ? (

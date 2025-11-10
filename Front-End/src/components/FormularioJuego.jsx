@@ -31,7 +31,7 @@ const FormularioJuego = ({ onAdd }) => {
         value={form.plataforma}
         onChange={handleChange}
       >
-        {["Plataforma", "PC", "Xbox", "PlayStation", "Celular", "Multiplataforma"].map((n) => (
+        {["PC", "Xbox", "PlayStation", "Celular", "Multiplataforma"].map((n) => (
           <option key={n} value={n}>
             {n}
           </option>
@@ -49,7 +49,7 @@ const FormularioJuego = ({ onAdd }) => {
         onChange={handleChange}
         placeholder="Descripción (opcional)"
       />
-      <button type="submit">Agregar juego</button>
+      <button type="submit">Guardar</button>
     </form>
   );
 };
