@@ -7,15 +7,15 @@ const ListaReseñas = ({ reseñas, onEdit, onDelete }) => {
         <p>No hay reseñas aún.</p>
       ) : (
         reseñas.map((r) => (
-          <div key={r.id} className="review">
+          <div key={r._id} className="review">
             <div className="review-header">
-              <strong>{r.autor || "Anónimo"}</strong> — {r.puntaje}★
-              <button onClick={() => onDelete(r.id)}>Eliminar</button>
+              <strong>{r.autor || "Anónimo"}</strong> — {r.puntuacion}★
+              <button onClick={() => onDelete(r._id)}>Eliminar</button>
             </div>
             <textarea
               value={r.texto}
               onChange={(e) =>
-                onEdit(r.id, { ...r, texto: e.target.value })
+                onEdit(r._id, { ...r, texto: e.target.value })
               }
             />
           </div>

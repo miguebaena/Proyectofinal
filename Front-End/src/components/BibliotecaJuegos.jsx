@@ -9,7 +9,7 @@ const BibliotecaJuegos = () => {
 
   // Cargar juegos desde el backend
   useEffect(() => {
-    fetch(`${API_URL}/juegos`)
+    fetch(`${API_URL}`)
       .then((res) => res.json())
       .then((data) => setGames(data))
       .catch((err) => console.error("Error al cargar juegos:", err));

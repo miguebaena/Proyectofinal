@@ -4,7 +4,7 @@ const FormularioReseña = ({ onAdd }) => {
   const [form, setForm] = useState({
     autor: "",
     texto: "",
-    puntaje: 5,
+    puntuacion: 5,
   });
 
   const handleChange = (e) =>
@@ -14,7 +14,7 @@ const FormularioReseña = ({ onAdd }) => {
     e.preventDefault();
     if (!form.texto.trim()) return alert("Escribe una reseña");
     onAdd(form);
-    setForm({ autor: "", texto: "", puntaje: 5 });
+    setForm({ autor: "", texto: "", puntuacion: 5 });
   };
 
   return (
@@ -33,11 +33,11 @@ const FormularioReseña = ({ onAdd }) => {
       />
       <label>Puntaje: </label>
       <select
-        name="puntaje"
-        value={form.puntaje}
+        name="puntuacion"
+        value={form.puntuacion}
         onChange={handleChange}
       >
-        {[5, 4, 3, 2, 1, 0].map((n) => (
+        {[5, 4, 3, 2, 1].map((n) => (
           <option key={n} value={n}>
             {n}
           </option>

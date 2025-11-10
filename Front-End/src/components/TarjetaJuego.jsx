@@ -1,71 +1,88 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { API_URL } from "../config.js";
 import ListaReseñas from "./ListaReseñas.jsx";
 import FormularioReseña from "./FormularioReseña.jsx";
 
-const TarjetaJuego = ({ game, onDelete, onEdit, setGames }) => {
+const TarjetaJuego = ({ game, onDelete, onEdit }) => {
   const [editando, setEditando] = useState(false);
   const [form, setForm] = useState(game);
   const [mostrarReseñas, setMostrarReseñas] = useState(false);
+  const [reseñas, setReseñas] = useState([]);
 
-  const handleEdit = (e) => {
+  // 🔹 Cargar reseñas del backend
+  useEffect(() => {
+    fetch(`${API_URL}/resenas?juegoId=${game._id}`)
+      .then((res) => res.json())
+      .then((data) => setReseñas(data))
+      .catch((err) => console.error("Error al cargar reseñas:", err));
+  }, [game._id]);
+
+  // 🔹 Agregar reseña
+  const agregarReseña = async (reseña) => {
+    const nueva = { ...reseña, juego: game._id };
+    const res = await fetch(`${API_URL}/resenas`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nueva),
+    });
+    const data = await res.json();
+    setReseñas([...reseñas, data]);
+  };
+
+  // 🔹 Editar reseña
+  const editarReseña = async (id, actualizada) => {
+    const res = await fetch(`${API_URL}/resenas/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(actualizada),
+    });
+    const data = await res.json();
+    setReseñas(reseñas.map((r) => (r._id === id ? data : r)));
+  };
+
+  // 🔹 Eliminar reseña
+  const eliminarReseña = async (id) => {
+    await fetch(`${API_URL}/resenas/${id}`, { method: "DELETE" });
+    setReseñas(reseñas.filter((r) => r._id !== id));
+  };
+
+  // 🔹 Editar juego
+  const handleEdit = async (e) => {
     e.preventDefault();
-    onEdit(game.id, form);
+    await onEdit(game._id, form);
     setEditando(false);
-  };
-
-  const agregarReseña = (reseña) => {
-    const nuevas = [...(game.reseñas || []), { ...reseña, id: Date.now() }];
-    onEdit(game.id, { reseñas: nuevas });
-  };
-
-  const editarReseña = (id, actualizada) => {
-    const nuevas = game.reseñas.map((r) => (r.id === id ? actualizada : r));
-    onEdit(game.id, { reseñas: nuevas });
-  };
-
-  const eliminarReseña = (id) => {
-    const nuevas = game.reseñas.filter((r) => r.id !== id);
-    onEdit(game.id, { reseñas: nuevas });
   };
 
   return (
     <article className="card">
       <img
-        src={
-          game.portada || "https://via.placeholder.com/150x200?text=Portada"
-        }
-        alt={game.titulo}
+        src={game.portadaURL || "https://via.placeholder.com/150x200?text=Portada"}
+        alt={game.nombre}
         className="cover"
       />
       <div className="card-body">
         {editando ? (
           <form onSubmit={handleEdit}>
             <input
-              value={form.titulo}
-              onChange={(e) =>
-                setForm({ ...form, titulo: e.target.value })
-              }
+              value={form.nombre}
+              onChange={(e) => setForm({ ...form, nombre: e.target.value })}
               placeholder="Título"
             />
             <input
               value={form.plataforma}
-              onChange={(e) =>
-                setForm({ ...form, plataforma: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, plataforma: e.target.value })}
               placeholder="Plataforma"
             />
             <textarea
               value={form.descripcion}
-              onChange={(e) =>
-                setForm({ ...form, descripcion: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
               placeholder="Descripción"
             />
             <button type="submit">Guardar</button>
           </form>
         ) : (
           <>
-            <h3>{game.titulo}</h3>
+            <h3>{game.nombre}</h3>
             <p><strong>Plataforma:</strong> {game.plataforma}</p>
             <p>{game.descripcion}</p>
           </>
@@ -78,14 +95,14 @@ const TarjetaJuego = ({ game, onDelete, onEdit, setGames }) => {
           <button onClick={() => setEditando(!editando)}>
             {editando ? "Cancelar" : "Editar"}
           </button>
-          <button onClick={() => onDelete(game.id)}>Eliminar</button>
+          <button onClick={() => onDelete(game._id)}>Eliminar</button>
         </div>
 
         {mostrarReseñas && (
           <div className="reviews-section">
             <FormularioReseña onAdd={agregarReseña} />
             <ListaReseñas
-              reseñas={game.reseñas || []}
+              reseñas={reseñas}
               onEdit={editarReseña}
               onDelete={eliminarReseña}
             />
