@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 const FormularioJuego = ({ onAdd }) => {
   const [form, setForm] = useState({
-    titulo: "",
+    nombre: "",
     plataforma: "",
-    portada: "",
+    portadaURL: "",
     descripcion: "",
   });
 
@@ -13,16 +13,16 @@ const FormularioJuego = ({ onAdd }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.titulo.trim()) return alert("Agrega un título al juego");
+    if (!form.nombre.trim()) return alert("Agrega un título al juego");
     onAdd(form);
-    setForm({ titulo: "", plataforma: "", portada: "", descripcion: "" });
+    setForm({ nombre: "", plataforma: "", portadaURL: "", descripcion: "" });
   };
 
   return (
     <form className="game-form" onSubmit={handleSubmit}>
       <input
-        name="titulo"
-        value={form.titulo}
+        name="nombre"
+        value={form.nombre}
         onChange={handleChange}
         placeholder="Título del juego"
       />
@@ -38,8 +38,8 @@ const FormularioJuego = ({ onAdd }) => {
         ))}
       </select>
       <input
-        name="portada"
-        value={form.portada}
+        name="portadaURL"
+        value={form.portadaURL}
         onChange={handleChange}
         placeholder="URL de portada (opcional)"
       />
