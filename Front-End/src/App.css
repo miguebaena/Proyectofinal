@@ -26,7 +26,7 @@ section {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* 🧩 Formulario general */
+/* Formulario general */
 form {
   display: flex;
   flex-direction: column;
@@ -79,10 +79,11 @@ button:hover {
 /* 🕹️ Tarjetas de juegos */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
   margin-top: 25px;
 }
+
 
 .card {
   background: #1e3a5f;
@@ -130,17 +131,33 @@ button:hover {
 
 /* 📝 Reseñas */
 .reviews-section {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.095);
   margin-top: 15px;
   padding: 12px;
   border-radius: 10px;
 }
 
+.review-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 .review-form input,
 .review-form textarea,
 .review-form select {
-  width: 100%;
+  width: 90%;              /* 🔹 ocupa solo el 90% del contenedor */
+  max-width: 400px;        /* 🔹 no crecerá más allá de 400px */
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1rem;
+  outline: none;
+  background: rgba(255, 255, 255, 0.889);
+  color: #82abdd;
 }
+
 
 .review {
   background: rgba(0, 119, 182, 0.15);
@@ -210,17 +227,5 @@ button:hover {
   to {
     transform: scale(1);
     opacity: 1;
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .stats {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .card-actions button {
-    flex: 1 1 45%;
   }
 }

@@ -5,7 +5,8 @@ const FormularioJuego = ({ onAdd }) => {
     nombre: "",
     plataforma: "",
     portadaURL: "",
-    descripcion: "",
+    estado: "Pendiente",
+    horasJugadas: 0
   });
 
   const handleChange = (e) =>
@@ -13,9 +14,15 @@ const FormularioJuego = ({ onAdd }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.nombre.trim()) return alert("Agrega un título al juego");
+    if (!form.nombre.trim()) return alert("Agrega un nombre al juego");
     onAdd(form);
-    setForm({ nombre: "", plataforma: "", portadaURL: "", descripcion: "" });
+    setForm({
+      nombre: "",
+      plataforma: "",
+      portadaURL: "",
+      estado: "Pendiente",
+      horasJugadas: 0
+    });
   };
 
   return (
@@ -24,32 +31,35 @@ const FormularioJuego = ({ onAdd }) => {
         name="nombre"
         value={form.nombre}
         onChange={handleChange}
-        placeholder="Título del juego"
+        placeholder="Nombre del juego"
       />
-      <select
-        name="plataforma"
-        value={form.plataforma}
+
+      <select name="plataforma" value={form.plataforma} onChange={handleChange}>
+        {["", "PC", "Xbox", "PlayStation", "Nintendo", "Celular", "Multiplataforma"].map(
+          (n) => (
+            <option key={n} value={n}>
+              {n || "Selecciona plataforma"}
+            </option>
+          )
+        )}
+      </select>
+
+      <input
+        name="portadaURL"
+        value={form.portadaURL}
         onChange={handleChange}
-      >
-        {["PC", "Xbox", "PlayStation", "Celular", "Multiplataforma"].map((n) => (
+        placeholder="URL de la portada"
+      />
+
+      <select name="estado" value={form.estado} onChange={handleChange}>
+        {["Pendiente", "Jugando", "Completado"].map((n) => (
           <option key={n} value={n}>
             {n}
           </option>
         ))}
       </select>
-      <input
-        name="portadaURL"
-        value={form.portadaURL}
-        onChange={handleChange}
-        placeholder="URL de portada (opcional)"
-      />
-      <textarea
-        name="descripcion"
-        value={form.descripcion}
-        onChange={handleChange}
-        placeholder="Descripción (opcional)"
-      />
-      <button type="submit">Guardar</button>
+
+      <button type="submit">Agregar juego</button>
     </form>
   );
 };

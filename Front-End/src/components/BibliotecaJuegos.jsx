@@ -9,6 +9,7 @@ const BibliotecaJuegos = () => {
   const [games, setGames] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
 
+  // 🔹 Cargar juegos del backend
   useEffect(() => {
     fetch(`${API_URL}/juegos`)
       .then((res) => res.json())
@@ -16,6 +17,7 @@ const BibliotecaJuegos = () => {
       .catch((err) => console.error("Error al cargar juegos:", err));
   }, []);
 
+  // 🔹 Agregar juego nuevo
   const agregarJuego = async (juego) => {
     try {
       const res = await fetch(`${API_URL}/juegos`, {
@@ -24,40 +26,75 @@ const BibliotecaJuegos = () => {
         body: JSON.stringify(juego),
       });
       const nuevo = await res.json();
-      setGames([...games, nuevo]);
-      setMostrarModal(false);
+
+      if (res.ok) {
+        setGames([...games, nuevo]);
+        setMostrarModal(false);
+      } else {
+        console.error("Error al guardar el juego:", nuevo);
+        alert("Error al guardar el juego. Revisa la consola.");
+      }
     } catch (err) {
       console.error("Error al agregar juego:", err);
     }
   };
 
+  // 🔹 Eliminar juego
   const eliminarJuego = async (id) => {
     const confirmar = window.confirm("¿Seguro que deseas eliminar este juego?");
     if (!confirmar) return;
-    await fetch(`${API_URL}/juegos/${id}`, { method: "DELETE" });
-    setGames(games.filter((j) => j._id !== id));
+
+    try {
+      const res = await fetch(`${API_URL}/juegos/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setGames(games.filter((j) => j._id !== id));
+      }
+    } catch (err) {
+      console.error("Error al eliminar juego:", err);
+    }
   };
 
+  // 🔹 Editar juego
   const editarJuego = async (id, actualizado) => {
-    const res = await fetch(`${API_URL}/juegos/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(actualizado),
-    });
-    const data = await res.json();
-    setGames(games.map((j) => (j._id === id ? data : j)));
+    try {
+      const res = await fetch(`${API_URL}/juegos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(actualizado),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setGames(games.map((j) => (j._id === id ? data : j)));
+      }
+    } catch (err) {
+      console.error("Error al editar juego:", err);
+    }
   };
+
+  //Actualizar reseñas
+
+  const actualizarResenasJuego = (id, nuevasResenas) => {
+  setGames((prevGames) =>
+    prevGames.map((juego) =>
+      juego._id === id ? { ...juego, reseñas: nuevasResenas } : juego
+    )
+  );
+};
+
+
 
   return (
     <section>
-      <h2>Biblioteca de Juegos</h2>
+      <h2>🎮 Biblioteca de Juegos</h2>
 
-      <button onClick={() => setMostrarModal(true)}> + Agregar Juego</button>
+      <button className="add-btn" onClick={() => setMostrarModal(true)}>
+        + Agregar Juego
+      </button>
 
       <EstadisticasPersonales games={games} />
 
       {mostrarModal && (
-        <div className="modal-overlay">
+        <div className="modal-bg">
           <div className="modal">
             <h3>Agregar Nuevo Juego</h3>
             <FormularioJuego onAdd={agregarJuego} />
@@ -78,6 +115,7 @@ const BibliotecaJuegos = () => {
               game={juego}
               onDelete={eliminarJuego}
               onEdit={editarJuego}
+              onUpdateResenas={actualizarResenasJuego}
             />
           ))
         )}

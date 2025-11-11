@@ -20,19 +20,25 @@ const TarjetaJuego = ({ game, onDelete, onEdit }) => {
 
   // 🔹 Guardar reseña en el backend
   const agregarReseña = async (reseña) => {
-    const nueva = { ...reseña, juego: game._id };
-    try {
-      const res = await fetch("http://localhost:3000/api/resenas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nueva),
-      });
-      const data = await res.json();
-      setReseñas([...reseñas, data]); // agregar sin recargar
-    } catch (error) {
-      console.error("Error al agregar reseña:", error);
-    }
-  };
+  const nueva = { ...reseña, juego: game._id };
+  try {
+    const res = await fetch("http://localhost:3000/api/resenas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nueva),
+    });
+    const data = await res.json();
+    const nuevas = [...reseñas, data];
+    setReseñas(nuevas);
+
+    // 🔹 Notificar al padre (BibliotecaJuegos)
+    onUpdateResenas(game._id, nuevas);
+
+  } catch (error) {
+    console.error("Error al agregar reseña:", error);
+  }
+};
+
 
   // 🔹 Editar reseña en el backend
   const editarReseña = async (id, actualizada) => {
@@ -44,6 +50,9 @@ const TarjetaJuego = ({ game, onDelete, onEdit }) => {
       });
       const data = await res.json();
       setReseñas(reseñas.map((r) => (r._id === id ? data : r)));
+
+      onUpdateResenas(game._id, nuevas);
+
     } catch (error) {
       console.error("Error al editar reseña:", error);
     }
@@ -54,6 +63,8 @@ const TarjetaJuego = ({ game, onDelete, onEdit }) => {
     try {
       await fetch(`http://localhost:3000/api/resenas/${id}`, { method: "DELETE" });
       setReseñas(reseñas.filter((r) => r._id !== id));
+      onUpdateResenas(game._id, nuevas);
+
     } catch (error) {
       console.error("Error al eliminar reseña:", error);
     }
@@ -94,7 +105,6 @@ const TarjetaJuego = ({ game, onDelete, onEdit }) => {
             <input
               value={form.plataforma}
               onChange={(e) => setForm({ ...form, plataforma: e.target.value })}
-              placeholder="Plataforma"
             />
             <textarea
               value={form.descripcion || ""}
