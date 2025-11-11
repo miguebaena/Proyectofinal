@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { API_URL } from "../config.js";
+import React, { useState, useEffect } from "react";
 import ListaReseñas from "./ListaReseñas.jsx";
 import FormularioReseña from "./FormularioReseña.jsx";
 
@@ -9,48 +8,72 @@ const TarjetaJuego = ({ game, onDelete, onEdit }) => {
   const [mostrarReseñas, setMostrarReseñas] = useState(false);
   const [reseñas, setReseñas] = useState([]);
 
-  // 🔹 Cargar reseñas del backend
+  // 🔹 Cargar reseñas del backend cuando se muestre la sección
   useEffect(() => {
-    fetch(`${API_URL}/resenas?juegoId=${game._id}`)
-      .then((res) => res.json())
-      .then((data) => setReseñas(data))
-      .catch((err) => console.error("Error al cargar reseñas:", err));
-  }, [game._id]);
+    if (mostrarReseñas) {
+      fetch(`http://localhost:3000/api/resenas?juegoId=${game._id}`)
+        .then((res) => res.json())
+        .then((data) => setReseñas(data))
+        .catch((err) => console.error("Error al cargar reseñas:", err));
+    }
+  }, [mostrarReseñas, game._id]);
 
-  // 🔹 Agregar reseña
+  // 🔹 Guardar reseña en el backend
   const agregarReseña = async (reseña) => {
     const nueva = { ...reseña, juego: game._id };
-    const res = await fetch(`${API_URL}/resenas`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(nueva),
-    });
-    const data = await res.json();
-    setReseñas([...reseñas, data]);
+    try {
+      const res = await fetch("http://localhost:3000/api/resenas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nueva),
+      });
+      const data = await res.json();
+      setReseñas([...reseñas, data]); // agregar sin recargar
+    } catch (error) {
+      console.error("Error al agregar reseña:", error);
+    }
   };
 
-  // 🔹 Editar reseña
+  // 🔹 Editar reseña en el backend
   const editarReseña = async (id, actualizada) => {
-    const res = await fetch(`${API_URL}/resenas/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(actualizada),
-    });
-    const data = await res.json();
-    setReseñas(reseñas.map((r) => (r._id === id ? data : r)));
+    try {
+      const res = await fetch(`http://localhost:3000/api/resenas/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(actualizada),
+      });
+      const data = await res.json();
+      setReseñas(reseñas.map((r) => (r._id === id ? data : r)));
+    } catch (error) {
+      console.error("Error al editar reseña:", error);
+    }
   };
 
-  // 🔹 Eliminar reseña
+  // Eliminar reseña
   const eliminarReseña = async (id) => {
-    await fetch(`${API_URL}/resenas/${id}`, { method: "DELETE" });
-    setReseñas(reseñas.filter((r) => r._id !== id));
+    try {
+      await fetch(`http://localhost:3000/api/resenas/${id}`, { method: "DELETE" });
+      setReseñas(reseñas.filter((r) => r._id !== id));
+    } catch (error) {
+      console.error("Error al eliminar reseña:", error);
+    }
   };
 
-  // 🔹 Editar juego
+  // Guardar cambios al editar juego
   const handleEdit = async (e) => {
     e.preventDefault();
-    await onEdit(game._id, form);
-    setEditando(false);
+    try {
+      const res = await fetch(`http://localhost:3000/api/juegos/${game._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      onEdit(game._id, data);
+      setEditando(false);
+    } catch (error) {
+      console.error("Error al editar juego:", error);
+    }
   };
 
   return (
@@ -74,7 +97,7 @@ const TarjetaJuego = ({ game, onDelete, onEdit }) => {
               placeholder="Plataforma"
             />
             <textarea
-              value={form.descripcion}
+              value={form.descripcion || ""}
               onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
               placeholder="Descripción"
             />

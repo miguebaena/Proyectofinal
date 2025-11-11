@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div className="container">
       <header>
-        <h1>🎮 GameTracker (Versión sin backend)</h1>
+        <h1>🎮 GameTracker Miguel Baena</h1>
       </header>
       <BibliotecaJuegos games={games} setGames={setGames} />
     </div>

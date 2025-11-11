@@ -4,7 +4,7 @@ const FormularioReseña = ({ onAdd }) => {
   const [form, setForm] = useState({
     autor: "",
     texto: "",
-    puntuacion: 5,
+    puntuacion: 5
   });
 
   const handleChange = (e) =>
@@ -13,7 +13,7 @@ const FormularioReseña = ({ onAdd }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.texto.trim()) return alert("Escribe una reseña");
-    onAdd(form);
+    onAdd(form); // llama a la función del padre
     setForm({ autor: "", texto: "", puntuacion: 5 });
   };
 
@@ -25,22 +25,16 @@ const FormularioReseña = ({ onAdd }) => {
         onChange={handleChange}
         placeholder="Autor (opcional)"
       />
-      <input
+      <textarea
         name="texto"
         value={form.texto}
         onChange={handleChange}
         placeholder="Tu reseña"
       />
-      <label>Puntaje: </label>
-      <select
-        name="puntuacion"
-        value={form.puntuacion}
-        onChange={handleChange}
-      >
+      <label>Puntaje:</label>
+      <select name="puntuacion" value={form.puntuacion} onChange={handleChange}>
         {[5, 4, 3, 2, 1].map((n) => (
-          <option key={n} value={n}>
-            {n}
-          </option>
+          <option key={n} value={n}>{n}</option>
         ))}
       </select>
       <button type="submit">Agregar reseña</button>

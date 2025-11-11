@@ -14,9 +14,7 @@ const ListaReseñas = ({ reseñas, onEdit, onDelete }) => {
             </div>
             <textarea
               value={r.texto}
-              onChange={(e) =>
-                onEdit(r._id, { ...r, texto: e.target.value })
-              }
+              onChange={(e) => onEdit(r._id, { ...r, texto: e.target.value })}
             />
           </div>
         ))
