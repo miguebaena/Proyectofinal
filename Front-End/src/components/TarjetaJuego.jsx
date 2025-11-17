@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ListaReseñas from "./ListaReseñas.jsx";
 import FormularioReseña from "./FormularioReseña.jsx";
 
-const TarjetaJuego = ({ game, onDelete, onEdit }) => {
+const TarjetaJuego = ({ game, onDelete, onEdit, onUpdateResenas }) => {
   const [editando, setEditando] = useState(false);
   const [form, setForm] = useState(game);
   const [mostrarReseñas, setMostrarReseñas] = useState(false);
@@ -18,29 +18,25 @@ const TarjetaJuego = ({ game, onDelete, onEdit }) => {
     }
   }, [mostrarReseñas, game._id]);
 
-  // 🔹 Guardar reseña en el backend
+  // 🔹 Crear reseña
   const agregarReseña = async (reseña) => {
-  const nueva = { ...reseña, juego: game._id };
-  try {
-    const res = await fetch("http://localhost:3000/api/resenas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(nueva),
-    });
-    const data = await res.json();
-    const nuevas = [...reseñas, data];
-    setReseñas(nuevas);
+    const nueva = { ...reseña, juego: game._id };
+    try {
+      const res = await fetch("http://localhost:3000/api/resenas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nueva),
+      });
+      const data = await res.json();
+      const nuevas = [...reseñas, data];
+      setReseñas(nuevas);
+      onUpdateResenas(game._id, nuevas); //actualizar el padre
+    } catch (error) {
+      console.error("Error al agregar reseña:", error);
+    }
+  };
 
-    // 🔹 Notificar al padre (BibliotecaJuegos)
-    onUpdateResenas(game._id, nuevas);
-
-  } catch (error) {
-    console.error("Error al agregar reseña:", error);
-  }
-};
-
-
-  // 🔹 Editar reseña en el backend
+  // 🔹 Editar reseña
   const editarReseña = async (id, actualizada) => {
     try {
       const res = await fetch(`http://localhost:3000/api/resenas/${id}`, {
@@ -49,28 +45,27 @@ const TarjetaJuego = ({ game, onDelete, onEdit }) => {
         body: JSON.stringify(actualizada),
       });
       const data = await res.json();
-      setReseñas(reseñas.map((r) => (r._id === id ? data : r)));
-
-      onUpdateResenas(game._id, nuevas);
-
+      const nuevas = reseñas.map((r) => (r._id === id ? data : r));
+      setReseñas(nuevas);
+      onUpdateResenas(game._id, nuevas); //actualizar el padre
     } catch (error) {
       console.error("Error al editar reseña:", error);
     }
   };
 
-  // Eliminar reseña
+  // 🔹 Eliminar reseña
   const eliminarReseña = async (id) => {
     try {
       await fetch(`http://localhost:3000/api/resenas/${id}`, { method: "DELETE" });
-      setReseñas(reseñas.filter((r) => r._id !== id));
-      onUpdateResenas(game._id, nuevas);
-
+      const nuevas = reseñas.filter((r) => r._id !== id);
+      setReseñas(nuevas);
+      onUpdateResenas(game._id, nuevas); //actualizar el padre
     } catch (error) {
       console.error("Error al eliminar reseña:", error);
     }
   };
 
-  // Guardar cambios al editar juego
+  // 🔹 Guardar cambios al editar juego
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
