@@ -32,7 +32,7 @@ const BibliotecaJuegos = () => {
         setMostrarModal(false);
       } else {
         console.error("Error al guardar el juego:", nuevo);
-        alert("Error al guardar el juego. Revisa la consola.");
+        alert("Error al guardar el juego. Revisa los datos.");
       }
     } catch (err) {
       console.error("Error al agregar juego:", err);
@@ -85,7 +85,7 @@ const BibliotecaJuegos = () => {
 
   return (
     <section>
-      <h2>🎮 Biblioteca de Juegos</h2>
+      <h2>Biblioteca de Juegos</h2>
 
       <button className="add-btn" onClick={() => setMostrarModal(true)}>
         + Agregar Juego

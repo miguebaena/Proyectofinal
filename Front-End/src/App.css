@@ -147,8 +147,8 @@ button:hover {
 .review-form input,
 .review-form textarea,
 .review-form select {
-  width: 90%;              /* 🔹 ocupa solo el 90% del contenedor */
-  max-width: 400px;        /* 🔹 no crecerá más allá de 400px */
+  width: 90%;              
+  max-width: 400px;
   border: none;
   border-radius: 8px;
   padding: 10px;
@@ -185,7 +185,7 @@ button:hover {
   padding: 6px;
 }
 
-/* 📊 Estadísticas */
+/*Estadísticas */
 .stats {
   display: flex;
   justify-content: space-evenly;
@@ -198,7 +198,7 @@ button:hover {
   text-align: center;
 }
 
-/* 🪟 Ventanas emergentes */
+/*Ventanas emergentes */
 .modal-bg {
   position: fixed;
   inset: 0;

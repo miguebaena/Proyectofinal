@@ -8,7 +8,7 @@ const TarjetaJuego = ({ game, onDelete, onEdit, onUpdateResenas }) => {
   const [mostrarReseñas, setMostrarReseñas] = useState(false);
   const [reseñas, setReseñas] = useState([]);
 
-  // 🔹 Cargar reseñas del backend cuando se muestre la sección
+  //Cargar reseñas del backend
   useEffect(() => {
     if (mostrarReseñas) {
       fetch(`http://localhost:3000/api/resenas?juegoId=${game._id}`)
@@ -18,7 +18,7 @@ const TarjetaJuego = ({ game, onDelete, onEdit, onUpdateResenas }) => {
     }
   }, [mostrarReseñas, game._id]);
 
-  // 🔹 Crear reseña
+  //Crear reseña
   const agregarReseña = async (reseña) => {
     const nueva = { ...reseña, juego: game._id };
     try {
@@ -30,13 +30,13 @@ const TarjetaJuego = ({ game, onDelete, onEdit, onUpdateResenas }) => {
       const data = await res.json();
       const nuevas = [...reseñas, data];
       setReseñas(nuevas);
-      onUpdateResenas(game._id, nuevas); //actualizar el padre
+      onUpdateResenas(game._id, nuevas);
     } catch (error) {
       console.error("Error al agregar reseña:", error);
     }
   };
 
-  // 🔹 Editar reseña
+  //Editar reseña
   const editarReseña = async (id, actualizada) => {
     try {
       const res = await fetch(`http://localhost:3000/api/resenas/${id}`, {
@@ -47,25 +47,25 @@ const TarjetaJuego = ({ game, onDelete, onEdit, onUpdateResenas }) => {
       const data = await res.json();
       const nuevas = reseñas.map((r) => (r._id === id ? data : r));
       setReseñas(nuevas);
-      onUpdateResenas(game._id, nuevas); //actualizar el padre
+      onUpdateResenas(game._id, nuevas);
     } catch (error) {
       console.error("Error al editar reseña:", error);
     }
   };
 
-  // 🔹 Eliminar reseña
+  //Eliminar reseña
   const eliminarReseña = async (id) => {
     try {
       await fetch(`http://localhost:3000/api/resenas/${id}`, { method: "DELETE" });
       const nuevas = reseñas.filter((r) => r._id !== id);
       setReseñas(nuevas);
-      onUpdateResenas(game._id, nuevas); //actualizar el padre
+      onUpdateResenas(game._id, nuevas);
     } catch (error) {
       console.error("Error al eliminar reseña:", error);
     }
   };
 
-  // 🔹 Guardar cambios al editar juego
+  //Guardar cambios al editar juego
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
@@ -91,31 +91,41 @@ const TarjetaJuego = ({ game, onDelete, onEdit, onUpdateResenas }) => {
       />
       <div className="card-body">
         {editando ? (
-          <form onSubmit={handleEdit}>
-            <input
-              value={form.nombre}
-              onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-              placeholder="Título"
-            />
-            <input
-              value={form.plataforma}
-              onChange={(e) => setForm({ ...form, plataforma: e.target.value })}
-            />
-            <textarea
-              value={form.descripcion || ""}
-              onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
-              placeholder="Descripción"
-            />
-            <button type="submit">Guardar</button>
-          </form>
-        ) : (
-          <>
-            <h3>{game.nombre}</h3>
-            <p><strong>Plataforma:</strong> {game.plataforma}</p>
-            <p>{game.descripcion}</p>
-          </>
-        )}
+  <form onSubmit={handleEdit}>
+    <input
+      value={form.nombre}
+      onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+      placeholder="Título"
+    />
+    <select
+      value={form.plataforma}
+      onChange={(e) =>
+        setForm({ ...form, plataforma: e.target.value })
+      }
+    >
+      <option value="">Selecciona una plataforma</option>
+      <option value="PC">PC</option>
+      <option value="Xbox">Xbox</option>
+      <option value="PlayStation">PlayStation</option>
+      <option value="Celular">Celular</option>
+      <option value="Multiplataforma">Multiplataforma</option>
+    </select>
 
+    <textarea
+      value={form.descripcion || ""}
+      onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
+      placeholder="Descripción"
+    />
+
+    <button type="submit">Guardar</button>
+  </form>
+) : (
+  <>
+    <h3>{game.nombre}</h3>
+    <p><strong>Plataforma:</strong> {game.plataforma}</p>
+    <p>{game.descripcion}</p>
+  </>
+)}
         <div className="card-actions">
           <button onClick={() => setMostrarReseñas(!mostrarReseñas)}>
             {mostrarReseñas ? "Ocultar reseñas" : "Ver reseñas"}
