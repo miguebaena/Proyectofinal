@@ -1,0 +1,12 @@
+# Ignorar dependencias de Node
+node_modules/
+
+# Archivos de compilación de Vite
+dist/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Variables de entorno (si las usas más adelante)
+.env
