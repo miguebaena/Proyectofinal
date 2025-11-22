@@ -80,9 +80,6 @@ const BibliotecaJuegos = () => {
     )
   );
 };
-
-
-
   return (
     <section>
       <h2>Biblioteca de Juegos</h2>
